@@ -4,6 +4,13 @@
         <meta charset="utf-8">
         <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://use.typekit.net/gom0psh.js"></script>
+        <script>
+            try{
+                Typekit.load({ async: true });
+            }
+            catch(e){}
+        </script>
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
@@ -18,7 +25,7 @@
                             <span></span>
                             <span></span>
                             <span></span>
-                            <p class="menu_text">Menu</p>
+                            <p class="menu_text brandon_text">Menu</p>
                         </a>
                     </div>
                     <ul class="menu_list">
@@ -83,33 +90,36 @@
                 </ul>
             </div>
         </section>
-        <section class="section_about">
+        <section class="section_about clearfix">
             <div class="slant_box slant_bot">
             </div>
             <article class="container">
-                <h2>Warsztat Shine Up</h2>
-                <p>
-                    Lorem Ipsum jest tekstem stosowanym
-                    jako przykładowy wypełniacz w
-                    przemyśle poligraficznym. Został po raz
-                    pierwszy użyty w XV w. przez
-                    nieznanego drukarza do wypełnienia
-                    tekstem próbnej książki. Pięć wieków
-                    później zaczął być używany przemyśle
-                    elektronicznym, pozostając praktycznie
-                    niezmienionym. Spopularyzował się w
-                    latach 60. XX w. wraz z publikacją
-                    arkuszy Letrasetu, zawierających
-                    fragmenty Lorem Ipsum.
-                </p>
-                <div class="button_white">
-                    Więcej
+                <div class="about_text">
+                    <h2>Warsztat Shine Up</h2>
+                    <p>
+                        Lorem Ipsum jest tekstem stosowanym
+                        jako przykładowy wypełniacz w
+                        przemyśle poligraficznym. Został po raz
+                        pierwszy użyty w XV w. przez
+                        nieznanego drukarza do wypełnienia
+                        tekstem próbnej książki. Pięć wieków
+                        później zaczął być używany przemyśle
+                        elektronicznym, pozostając praktycznie
+                        niezmienionym. Spopularyzował się w
+                        latach 60. XX w. wraz z publikacją
+                        arkuszy Letrasetu, zawierających
+                        fragmenty Lorem Ipsum.
+                    </p>
+                    <div class="button_white">
+                        Więcej
+                    </div>
+
                 </div>
             </article>
             <div class="container about_photo">
             </div>
         </section>
-        <section class="section_realizations">
+        <section class="section_realizations clearfix">
             <h2>Nasze realizacje</h2>
             <p class="realizations_text container">
                 Lorem Ipsum jest tekstem stosowanym
@@ -121,7 +131,7 @@
                 później zaczął być używany przemyśle
                 elektronicznym.
             </p>
-            <nav class="realizations_category">
+            <nav class="realizations_category clearfix">
                 <ul class="container category_list">
                     <span class="category">Kategoria: </span>
                     <li class="category_active">
@@ -158,7 +168,7 @@
                     niezmienionym.
                 </p>
             </article>
-            <article class="realizations_box">
+            <article class="realizations_box desktop_box">
                 <div class="realizations_photo">
                     <img src="images/volvoXC90.jpg" alt="Volvo XC 90">
                 </div>
@@ -175,8 +185,25 @@
                     niezmienionym.
                 </p>
             </article>
+            <article class="realizations_box">
+                <div class="realizations_photo">
+                    <img src="images/mercedesGLE.jpg" alt="Mercedes GLE">
+                </div>
+                <h3>Mercedes GLE</h3>
+                <p class="container">
+                    Lorem Ipsum jest tekstem stosowanym
+                    jako przykładowy wypełniacz w
+                    przemyśle poligraficznym. Został po raz
+                    pierwszy użyty w XV w. przez
+                    nieznanego drukarza do wypełnienia
+                    tekstem próbnej książki. Pięć wieków
+                    później zaczął być używany przemyśle
+                    elektronicznym, pozostając praktycznie
+                    niezmienionym.
+                </p>
+            </article>
         </section>
-        <section class="section_reviews">
+        <section class="section_reviews clearfix">
             <div class="reservation_box">
                 <div class="container">
                     <div class="reservation_description">
@@ -191,7 +218,7 @@
                 <div class="gradient_box">
                 </div>
             </div>
-            <div class="container">
+            <div class="container opinion_container">
                 <h2>Opinie Klientów</h2>
                 <article class="opinion_box">
                     <h3>Mercedes Warszawa</h3>
@@ -218,16 +245,22 @@
                         <img src="images/blackArrow.png" alt=">">
                     </a>
                 </div>
+                <ul class="opinion_list">
+                    <li class="opinion_active"><a href="#">Mercedes Warszawa</a></li>
+                    <li><a href="#">Mercedes Warszawa</a></li>
+                    <li><a href="#">Mercedes Warszawa</a></li>
+                    <li><a href="#">Mercedes Warszawa</a></li>
+                </ul>
             </div>
         </section>
-        <section class="section_contact">
+        <section class="section_contact clearfix">
             <div class="container">
                 <div class="logo_box">
                     <img src="images/logoBlack.png" alt="Shine Up Detailing">
                 </div>
                 <ul class="contact_list">
                     <li><a href="tel://+48223657888">22 365 78 88</a></li>
-                    <li><a href="tel://+48223657888">22 365 78 90</a></li>
+                    <li><a href="tel://+48223657890">22 365 78 90</a></li>
                     <li>Pon. - Pt. 9.00 - 17.00</li>
                     <li><a href="mailto:shine@shineup.pl">shine@shineup.pl</a></li>
                     <li><a href="#">ul. Marszałkowska 1/35</a></li>
@@ -238,16 +271,24 @@
         <footer>
             <div class="container">
                 <div class="social_media_box">
-                    <img src="images/facebook.png" alt="Facebook">
+                    <a href="#">
+                        <img src="images/facebook.png" alt="Facebook">
+                    </a>
                 </div>
                 <div class="social_media_box">
-                    <img src="images/google.png" alt="Google+">
+                    <a href="#">
+                        <img src="images/google.png" alt="Google+">
+                    </a>
                 </div>
                 <div class="social_media_box">
-                    <img src="images/youtube.png" alt="YouTube">
+                    <a href="#">
+                        <img src="images/youtube.png" alt="YouTube">
+                    </a>
                 </div>
                 <div class="social_media_box">
-                    <img src="images/pinterest.png" alt="Pinterest">
+                    <a href="#">
+                        <img src="images/pinterest.png" alt="Pinterest">
+                    </a>
                 </div>
             </div>
         </footer>
