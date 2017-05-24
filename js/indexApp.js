@@ -1,1 +1,465 @@
-let MobileMenu={DOMElements:{body:$("body"),menuButton:$(".menu_button"),menuList:$(".menu_list"),mobileLogo:$(".mobile_logo")},State:{menuActive:!1},setSizeMenu:()=>{let e=MobileMenu.DOMElements.menuList;let t=MobileMenu.DOMElements.mobileLogo;let n=$(window).width();let i=$(window).height();n>=i?(e.addClass("mobile_menu_horizontal"),t.addClass("mobile_logo_horizontal"),t.removeClass("mobile_logo_vertical"),e.removeClass("mobile_menu_vertical")):(e.addClass("mobile_menu_vertical"),t.addClass("mobile_logo_vertical"),t.removeClass("mobile_logo_horizontal"),e.removeClass("mobile_menu_horizontal"))},setButton:()=>{MobileMenu.DOMElements.menuButton.on("click",e=>{e.preventDefault();let t=MobileMenu.DOMElements.menuList;let n=MobileMenu.DOMElements.menuButton;let i=MobileMenu.DOMElements.body;let o=MobileMenu.State.menuActive;MobileMenu.setSizeMenu();i.toggleClass("stop_scroll");n.toggleClass("menu_active_button");MobileMenu.State.menuActive=0==o;t.toggle(300)})},setResize:()=>{let e=$(window).width();let t=MobileMenu.DOMElements.menuList;MobileMenu.DOMElements.menuButton;MobileMenu.DOMElements.body;let n=MobileMenu.DOMElements.mobileLogo;if(e<1024)MobileMenu.setSizeMenu(),0==MobileMenu.State.menuActive?t.css("display","none"):t.css("display","block");else{let e=MobileMenu.DOMElements.menuList;e.removeClass("mobile_menu_vertical","mobile_menu_horizontal").css("display","block"),n.removeClass("mobile_logo_vertical mobile_logo_horizontal")}}},ServiceMenu={DOMElements:{serviceList:0,buttons:0,serviceDescription:0},setElements:()=>{let e=$(".service_list").length;if(e>0){let e=$(".service_list"),t=e.find("a"),n=t.next();return ServiceMenu.DOMElements.serviceDescription=n,ServiceMenu.DOMElements.serviceList=e,ServiceMenu.DOMElements.buttons=t,!0}return!1},setButtons:()=>{if(ServiceMenu.setElements()){let e=ServiceMenu.DOMElements.buttons;e.on("click",e=>{e.preventDefault();let t=$(window).width();if(t<1200){let t=$(e.target),n=t.parent(),i=n.hasClass("service_name");if(i){let e=t.next();n.toggleClass("active_service_name"),e.toggleClass("service_description_active"),e.toggle(300)}else{let e=n.next();n.parent().toggleClass("active_service_name"),e.toggleClass("service_description_active"),e.toggle(300)}}})}},setResize:()=>{let e=$(window).width();if(ServiceMenu.setElements())if(e>1199)ServiceMenu.DOMElements.serviceDescription.css("display","block");else{let e=ServiceMenu.DOMElements.serviceDescription;e.each(function(){$(this).hasClass("service_description_active")?$(this).css("display","block"):$(this).css("display","none")})}}},CategoryMenu={DOMElements:{categoryList:0,buttons:0},State:{menuActive:!1},setElements:()=>{let e=$(".category_list").length;if(e>0){let e=$(".category_list"),t=e.find("li");return CategoryMenu.DOMElements.categoryList=e,CategoryMenu.DOMElements.buttons=t,!0}return!1},setButtons:()=>{if(CategoryMenu.setElements()){let e=CategoryMenu.DOMElements.buttons;e.on("click",t=>{t.preventDefault();let n=$(window).width();if(n<680){let n=$(t.target).parent();if(n.hasClass("category_active")||n.parent().hasClass("category_active"))CategoryMenu.State.menuActive?CategoryMenu.State.menuActive&&(e.each(function(){$(this).hasClass("category")||$(this).hasClass("category_active")?e.hasClass("category_active")&&$(this).removeClass("category_name_active"):($(this).removeClass("category_menu_active"),$(this).slideUp(600))}),CategoryMenu.State.menuActive=!1):(e.each(function(){$(this).hasClass("category")||$(this).hasClass("category_active")?e.hasClass("category_active")&&$(this).addClass("category_name_active"):($(this).addClass("category_menu_active"),$(this).slideDown(600))}),CategoryMenu.State.menuActive=!0);else if(n.hasClass("category_menu_active")){let e=$(".category_active");e.removeClass("category_active category_name_active").addClass("category_menu_active").css("display","block"),n.removeClass("category_menu_active").addClass("category_active category_name_active")}}else{let e=$(t.target).parent();if(!e.hasClass("category_active")&&!e.parent().hasClass("category_active")){let n=$(".category_active");"#"==$(t.target).attr("href")?e.addClass("category_active"):$(t.target).addClass("category_active"),n.removeClass("category_active")}}})}},setResize:()=>{let e=$(window).width();let t=CategoryMenu.DOMElements.buttons;e>679?t.each(function(){$(this).hasClass("category")?$(this).css("display","none"):$(this).hasClass("category_active")?($(this).removeClass(),$(this).addClass("category_active")):$(this).css("display","block")}):t.each(function(){$(this).hasClass("category")?$(this).css("display","block"):$(this).hasClass("category_active")?($(this).removeClass(),$(this).addClass("category_active"),1==CategoryMenu.State.menuActive&&$(this).addClass("category_name_active")):1==CategoryMenu.State.menuActive?$(this).addClass("category_menu_active"):($(this).removeClass("category_menu_active"),$(this).css("display","none"))})}};OpinionMenu={DOMElements:{opinionContainer:0,opinionBoxs:0,activeBox:0,opinionHeaders:0,nav:0,button:0,list:0,listButtons:0},setElements:()=>{let e=$(".opinion_container");if(e.length>0){let t=e.find(".opinion_box"),n=e.find(".opinion_box_active"),i=t.find("h3"),o=$(".reviews_nav"),s=o.find(".reviews_button"),a=o.find(".opinion_list");return OpinionMenu.DOMElements.opinionContainer=e,OpinionMenu.DOMElements.activeBox=n,OpinionMenu.DOMElements.opinionBoxs=t,OpinionMenu.DOMElements.opinionHeaders=i,OpinionMenu.DOMElements.nav=o,OpinionMenu.DOMElements.button=s,OpinionMenu.DOMElements.list=a,!0}return!1},setButtons:()=>{if(OpinionMenu.setElements()){let t=OpinionMenu.DOMElements.opinionBoxs,n=OpinionMenu.DOMElements.opinionHeaders,i=OpinionMenu.DOMElements.list,o=OpinionMenu.DOMElements.button;for(var e=0;e<t.length;e++){let o=$(n[e]).text(),s=$("<li>");OpinionMenu.DOMElements.nav;$(t[e]).hasClass("opinion_box_active")&&s.addClass("opinion_active");let a=$("<a href='#'>");a.text(o),s.append(a);let l=$(t[e]);s.on("click",e=>{e.preventDefault();let t=OpinionMenu.DOMElements.activeBox;if(!s.hasClass("opinion_active")){let e=$(".opinion_active");e.removeClass("opinion_active"),s.addClass("opinion_active"),t.animate({opacity:0},300,function(){t.removeClass("opinion_box_active"),l.css("opacity",0),l.addClass("opinion_box_active"),l.animate({opacity:1},300)}),OpinionMenu.DOMElements.activeBox=l}}),i.append(s)}if(t.length>4){let e=OpinionMenu.DOMElements.nav,n=parseInt(e.css("margin-top")),i=$(".opinion_active"),o=parseInt(i.css("height")),s=parseInt(i.css("margin-bottom")),a=n-(o+s)*(t.length-4);a<0&&(a=0),e.css("margin-top",a)}o.on("click",e=>{e.preventDefault();let t=$(".opinion_list");let n=$(".opinion_box");let i=t.find("li");let o=$(".opinion_active");let s=$(".opinion_box_active");let a=$(o.next());let l=$(s.next());a.length>0&&l.length>0?(o.removeClass("opinion_active"),a.addClass("opinion_active"),s.animate({opacity:0},300,function(){s.removeClass("opinion_box_active"),l.css("opacity",0),l.addClass("opinion_box_active"),l.animate({opacity:1},300)})):(a=$(i[0]),l=$(n[0]),o.removeClass("opinion_active"),a.addClass("opinion_active"),s.animate({opacity:0},300,function(){s.removeClass("opinion_box_active"),l.css("opacity",0),l.addClass("opinion_box_active"),l.animate({opacity:1},300)}));OpinionMenu.DOMElements.activeBox=l})}}};let Popup={DOMElements:{buttons:$(".popup_button"),popupBox:$(".popup_box"),exitBut:$(".button_exit"),body:$("body")},setButtons:()=>{let e=Popup.DOMElements.buttons;let t=Popup.DOMElements.popupBox;let n=Popup.DOMElements.exitBut;Popup.DOMElements.body;e.on("click",e=>{e.preventDefault();let n=$(window).width();let i=$(window).height();n>i&&n<768&&t.addClass("popup_box_horizontal");t.css("left",-10*n).css("display","block");t.animate({left:0},600,()=>{})});n.on("click",e=>{e.preventDefault();let n=$(window).width();$(window).height();t.animate({left:-10*n},1e3,()=>{t.css("display","none");t.removeClass("popup_box_horizontal")})})},setResize:()=>{let e=$(window).width();let t=$(window).height();let n=Popup.DOMElements.popupBox;e<768&&e>t?n.addClass("popup_box_horizontal"):n.removeClass("popup_box_horizontal")}};MobileMenu.setButton(),ServiceMenu.setButtons(),CategoryMenu.setButtons(),OpinionMenu.setButtons(),Popup.setButtons(),$(window).on("resize",e=>{MobileMenu.setResize();ServiceMenu.setResize();CategoryMenu.setResize();Popup.setResize()});
+//$(function(){
+
+    let MobileMenu = {
+        DOMElements: {
+            body: $("body"),
+            menuButton: $(".menu_button"),
+            menuList: $(".menu_list"),
+            mobileLogo: $(".mobile_logo"),
+        },
+        State: {
+            menuActive: false,
+        },
+        setSizeMenu: () =>{
+            let list = MobileMenu.DOMElements.menuList;
+            let mobileLogo = MobileMenu.DOMElements.mobileLogo;
+            let windowWidth = $(window).width();
+            let windowHeight = $(window).height();
+            if (windowWidth >= windowHeight) {
+                list.addClass("mobile_menu_horizontal");
+                mobileLogo.addClass("mobile_logo_horizontal");
+                mobileLogo.removeClass("mobile_logo_vertical");
+                list.removeClass("mobile_menu_vertical");
+            }
+            else{
+                list.addClass("mobile_menu_vertical");
+                mobileLogo.addClass("mobile_logo_vertical");
+                mobileLogo.removeClass("mobile_logo_horizontal");
+                list.removeClass("mobile_menu_horizontal");
+            }
+        },
+        setButton: () =>{
+            MobileMenu.DOMElements.menuButton.on('click', (event) => {
+                event.preventDefault();
+                let list = MobileMenu.DOMElements.menuList;
+                let button = MobileMenu.DOMElements.menuButton;
+                let body = MobileMenu.DOMElements.body;
+                let menuActive = MobileMenu.State.menuActive;
+                MobileMenu.setSizeMenu();
+                body.toggleClass("stop_scroll");
+                button.toggleClass("menu_active_button");
+                if(menuActive == false){
+                    MobileMenu.State.menuActive = true;
+                }
+                else{
+                    MobileMenu.State.menuActive = false;
+                }
+                list.toggle(300);
+            });
+        },
+        setResize: () =>{
+            let windowWidth = $(window).width();
+            let list = MobileMenu.DOMElements.menuList;
+            let button = MobileMenu.DOMElements.menuButton;
+            let body = MobileMenu.DOMElements.body;
+            let mobileLogo = MobileMenu.DOMElements.mobileLogo;
+            if(windowWidth < 1024){
+                MobileMenu.setSizeMenu();
+                if(MobileMenu.State.menuActive == false){
+                    list.css("display", "none");
+                }
+                else{
+                    list.css("display", "block");
+                }
+            }
+            else{
+                let list = MobileMenu.DOMElements.menuList;
+                list.removeClass("mobile_menu_vertical", "mobile_menu_horizontal").css("display", "block");
+                mobileLogo.removeClass("mobile_logo_vertical mobile_logo_horizontal");
+            }
+        },
+    };
+
+    let ServiceMenu = {
+        DOMElements: {
+            serviceList: 0,
+            buttons: 0,
+            serviceDescription: 0,
+        },
+        setElements: () =>{
+            let checkServiceList = $(".service_list").length;
+            if (checkServiceList > 0){
+                let serviceList = $(".service_list");
+                let buttons = serviceList.find("a");
+                let serviceDescription = buttons.next();
+                ServiceMenu.DOMElements.serviceDescription = serviceDescription;
+                ServiceMenu.DOMElements.serviceList = serviceList;
+                ServiceMenu.DOMElements.buttons = buttons;
+                return true;
+            }
+            else{
+                return false;
+            }
+        },
+        setButtons: () =>{
+            if(ServiceMenu.setElements()){
+                let buttons = ServiceMenu.DOMElements.buttons;
+                buttons.on('click', (event) => {
+                    event.preventDefault();
+                    let windowWidth = $(window).width();
+                    if(windowWidth < 1200){
+                        let eventTarget = $(event.target);
+                        let eventParent = eventTarget.parent();
+                        let checkParent = eventParent.hasClass("service_name");
+                        if(checkParent){
+                            let serviceList = eventTarget.next();
+                            eventParent.toggleClass("active_service_name");
+                            serviceList.toggleClass("service_description_active");
+                            serviceList.toggle(300);
+                        }
+                        else{
+                            let serviceList = eventParent.next();
+                            eventParent.parent().toggleClass("active_service_name");
+                            serviceList.toggleClass("service_description_active");
+                            serviceList.toggle(300);
+                        }
+                    }
+                })
+            }
+        },
+        setResize: () =>{
+            let windowWidth = $(window).width();
+            if (ServiceMenu.setElements()){
+                if(windowWidth > 1199){
+                    ServiceMenu.DOMElements.serviceDescription.css("display", "block");
+                }
+                else{
+                    let serviceDescription = ServiceMenu.DOMElements.serviceDescription;
+                    serviceDescription.each(function(){
+                        if($(this).hasClass("service_description_active")){
+                            $(this).css("display", "block");
+                        }
+                        else{
+                            $(this).css("display", "none");
+                        }
+                    })
+                }
+            }
+        },
+    };
+
+
+    let CategoryMenu = {
+        DOMElements:{
+            categoryList: 0,
+            buttons: 0,
+        },
+        State:{
+            menuActive: false,
+        },
+        setElements: () => {
+            let checkCategoryList = $(".category_list").length;
+            if (checkCategoryList > 0){
+                let categoryList = $(".category_list");
+                let buttons = categoryList.find("li")
+                CategoryMenu.DOMElements.categoryList = categoryList;
+                CategoryMenu.DOMElements.buttons = buttons;
+                return true;
+
+            }
+            else{
+                return false;
+            }
+        },
+        setButtons: () => {
+            if(CategoryMenu.setElements()){
+                let buttons = CategoryMenu.DOMElements.buttons;
+                buttons.on('click', (event) => {
+                    event.preventDefault();
+                    let windowWidth = $(window).width();
+                    if(windowWidth < 680){
+                        let eventParent = $(event.target).parent();
+                        if(eventParent.hasClass("category_active") || eventParent.parent().hasClass("category_active")){
+                            if(!(CategoryMenu.State.menuActive)){
+                                buttons.each(function(){
+                                    if( !( $(this).hasClass("category") || $(this).hasClass("category_active") )){
+                                        $(this).addClass("category_menu_active");
+                                        $(this).slideDown(600);
+                                    }
+                                    else if(buttons.hasClass("category_active")){
+                                        $(this).addClass("category_name_active");
+                                    }
+                                });
+                                CategoryMenu.State.menuActive = true;
+                            }
+                            else if(CategoryMenu.State.menuActive){
+                                buttons.each(function(){
+                                    if( !( $(this).hasClass("category") || $(this).hasClass("category_active") )){
+                                        $(this).removeClass("category_menu_active");
+                                        $(this).slideUp(600);
+                                    }
+                                    else if(buttons.hasClass("category_active")){
+                                        $(this).removeClass("category_name_active");
+                                    }
+                                });
+                                CategoryMenu.State.menuActive = false;
+                            }
+                        }
+                        else if(eventParent.hasClass("category_menu_active")){
+                            let oldCategory = $(".category_active");
+                            oldCategory.removeClass("category_active category_name_active").addClass("category_menu_active").css("display", "block");
+                            eventParent.removeClass("category_menu_active").addClass("category_active category_name_active");
+                        }
+                    }
+                    else{
+                        let eventParent = $(event.target).parent();
+                        if(!(eventParent.hasClass("category_active") || eventParent.parent().hasClass("category_active"))){
+                            let oldCategory = $(".category_active");
+                            if($(event.target).attr("href") == "#"){
+                                eventParent.addClass("category_active");
+                            }
+                            else{
+                                $(event.target).addClass("category_active");
+                            }
+                            oldCategory.removeClass("category_active");
+                        }
+                    }
+                });
+            }
+        },
+        setResize: () => {
+            let windowWidth = $(window).width();
+            let buttons = CategoryMenu.DOMElements.buttons;
+            if(windowWidth > 679){
+                buttons.each(function(){
+                    if($(this).hasClass("category")){
+                        $(this).css("display", "none");
+                    }
+                    else if($(this).hasClass("category_active")){
+                        $(this).removeClass();
+                        $(this).addClass("category_active");
+                    }
+                    else{
+                        $(this).css("display", "block");
+                    }
+                });
+            }
+            else{
+                buttons.each(function(){
+                    if($(this).hasClass("category")){
+                        $(this).css("display", "block");
+
+                    }
+                    else if($(this).hasClass("category_active")){
+                        $(this).removeClass();
+                        $(this).addClass("category_active");
+                        if(CategoryMenu.State.menuActive == true){
+                            $(this).addClass("category_name_active");
+                        }
+                    }
+                    else{
+                        if(CategoryMenu.State.menuActive == true){
+                            $(this).addClass("category_menu_active");
+                        }
+                        else{
+                            $(this).removeClass("category_menu_active");
+                            $(this).css("display", "none");
+                        }
+                    }
+                });
+            }
+        },
+    };
+
+    OpinionMenu = {
+        DOMElements: {
+            opinionContainer: 0,
+            opinionBoxs: 0,
+            activeBox: 0,
+            opinionHeaders: 0,
+            nav: 0,
+            button: 0,
+            list: 0,
+            listButtons: 0,
+        },
+        setElements: () => {
+            let opinionContainer = $(".opinion_container");
+            if(opinionContainer.length > 0){
+                let opinionBoxs = opinionContainer.find(".opinion_box");
+                let activeBox = opinionContainer.find(".opinion_box_active");
+                let opinionHeaders = opinionBoxs.find("h3");
+                let nav = $(".reviews_nav");
+                let button = nav.find(".reviews_button");
+                let list = nav.find(".opinion_list");
+                OpinionMenu.DOMElements.opinionContainer = opinionContainer;
+                OpinionMenu.DOMElements.activeBox = activeBox;
+                OpinionMenu.DOMElements.opinionBoxs = opinionBoxs;
+                OpinionMenu.DOMElements.opinionHeaders = opinionHeaders;
+                OpinionMenu.DOMElements.nav = nav;
+                OpinionMenu.DOMElements.button = button;
+                OpinionMenu.DOMElements.list = list;
+                return true;
+            }
+            else{
+                return false;
+            }
+        },
+        setButtons: () => {
+            if(OpinionMenu.setElements()){
+                let opinionBoxs = OpinionMenu.DOMElements.opinionBoxs;
+                let opinionHeaders = OpinionMenu.DOMElements.opinionHeaders;
+                let list = OpinionMenu.DOMElements.list;
+                let button = OpinionMenu.DOMElements.button;
+                for (var i = 0; i < opinionBoxs.length; i++) {
+                    let header = $(opinionHeaders[i]).text();
+                    let newLi = $("<li>");
+                    let nav = OpinionMenu.DOMElements.nav;
+                    if($(opinionBoxs[i]).hasClass("opinion_box_active")){
+                        newLi.addClass("opinion_active");
+                    }
+                    let newButton = $("<a href='#'>")
+                    newButton.text(header);
+                    newLi.append(newButton);
+                    let box = $(opinionBoxs[i]);
+                    newLi.on('click', (event) => {
+                        event.preventDefault();
+                        let activeBox = OpinionMenu.DOMElements.activeBox;
+                        if(!(newLi.hasClass("opinion_active"))){
+                            let opinionActive =$(".opinion_active");
+                            opinionActive.removeClass("opinion_active");
+                            newLi.addClass("opinion_active");
+                            activeBox.animate({
+                                opacity: 0,
+                            }, 300, function(){
+                                activeBox.removeClass("opinion_box_active");
+                                box.css("opacity", 0);
+                                box.addClass("opinion_box_active");
+                                box.animate({
+                                    opacity: 1,
+                                }, 300);
+                            });
+                            OpinionMenu.DOMElements.activeBox = box;
+                        }
+                    })
+                    list.append(newLi);
+                }
+                if (opinionBoxs.length > 4) {
+                    let nav = OpinionMenu.DOMElements.nav;
+                    let navMargin = parseInt(nav.css("margin-top"));
+                    let li = $(".opinion_active");
+                    let liHeight = parseInt(li.css("height"));
+                    let liMargin = parseInt(li.css("margin-bottom"));
+                    let newMargin = navMargin - ((liHeight + liMargin) * (opinionBoxs.length - 4));
+                    if(newMargin < 0){
+                        newMargin = 0;
+                    }
+                    nav.css("margin-top", newMargin);
+                }
+                button.on('click', (event) => {
+                    event.preventDefault();
+                    let list = $(".opinion_list");
+                    let boxs = $(".opinion_box");
+                    let buttons = list.find("li");
+                    let opinionActive = $(".opinion_active");
+                    let activeBox = $(".opinion_box_active");
+                    let newLi = $(opinionActive.next());
+                    let box = $(activeBox.next());
+                    if (newLi.length > 0 && box.length > 0){
+                        opinionActive.removeClass("opinion_active");
+                        newLi.addClass("opinion_active");
+                        activeBox.animate({
+                            opacity: 0,
+                        }, 300, function(){
+                            activeBox.removeClass("opinion_box_active");
+                            box.css("opacity", 0);
+                            box.addClass("opinion_box_active");
+                            box.animate({
+                                opacity: 1,
+                            }, 300);
+                        });
+                    }
+                    else{
+                        newLi = $(buttons[0]);
+                        box = $(boxs[0]);
+                        opinionActive.removeClass("opinion_active");
+                        newLi.addClass("opinion_active");
+                        activeBox.animate({
+                            opacity: 0,
+                        }, 300, function(){
+                            activeBox.removeClass("opinion_box_active");
+                            box.css("opacity", 0);
+                            box.addClass("opinion_box_active");
+                            box.animate({
+                                opacity: 1,
+                            }, 300);
+                        });
+                    }
+                    OpinionMenu.DOMElements.activeBox = box;
+                });
+            }
+        },
+    };
+    let Popup = {
+        DOMElements:{
+            buttons: $(".popup_button"),
+            popupBox: $(".popup_box"),
+            exitBut: $(".button_exit"),
+            body: $("body"),
+        },
+        setButtons: () => {
+            let buttons = Popup.DOMElements.buttons;
+            let popup = Popup.DOMElements.popupBox;
+            let exitBut = Popup.DOMElements.exitBut;
+            let body = Popup.DOMElements.body;
+            buttons.on('click', (event) => {
+                event.preventDefault();
+                let windowWidth = $(window).width();
+                let windowHeight = $(window).height();
+                if(windowWidth > windowHeight && windowWidth < 768){
+                    popup.addClass("popup_box_horizontal");
+                }
+                popup.css("left", -(windowWidth * 10)).css("display", "block");
+                //console.log(windowWidth * 2);
+                popup.animate({
+                    left: 0,
+                }, 600, () =>{
+                    if(windowWidth < 768){
+                    //    body.addClass("stop_scroll");
+                    }
+                    else{
+                    //    body.removeClass("stop_scroll");
+                    }
+                });
+            });
+            exitBut.on('click', (event) => {
+                event.preventDefault();
+                let windowWidth = $(window).width();
+                let windowHeight = $(window).height();
+                popup.animate({
+                    left: -(windowWidth * 10),
+                }, 1000, () =>{
+                    popup.css("display", "none");
+                    popup.removeClass("popup_box_horizontal");
+                    //body.removeClass("stop_scroll");
+                });
+            })
+        },
+        setResize: () => {
+            let windowWidth = $(window).width();
+            let windowHeight = $(window).height();
+            let popup = Popup.DOMElements.popupBox;
+            if (windowWidth < 768){
+                if(windowWidth > windowHeight){
+                    popup.addClass("popup_box_horizontal");
+                }
+                else{
+                    popup.removeClass("popup_box_horizontal");
+                }
+            }
+            else{
+                popup.removeClass("popup_box_horizontal");
+            }
+        },
+    };
+    MobileMenu.setButton();
+    ServiceMenu.setButtons();
+    CategoryMenu.setButtons();
+    OpinionMenu.setButtons();
+    Popup.setButtons();
+    $(window).on('resize', (event) => {
+        MobileMenu.setResize();
+        ServiceMenu.setResize();
+        CategoryMenu.setResize();
+        Popup.setResize();
+    })
+//});
