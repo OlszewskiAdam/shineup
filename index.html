@@ -30,7 +30,7 @@
                     </div>
                     <ul class="menu_list">
                         <li><a href="services.html">Usługi</a></li>
-                        <li><a href="realizacje.html">Realizacje</a></li>
+                        <li><a href="realizacje.php">Realizacje</a></li>
                         <li><a href="about.html">O nas</a></li>
                         <li><a href="kontakt.html">Kontakt</a></li>
                         <li class = "mobile_logo">
@@ -140,20 +140,14 @@
             <nav class="realizations_category clearfix">
                 <ul class="container category_list">
                     <li class="category">Kategoria: </li>
-                    <li class="category_active">
+                    <li class="category_active" data-category="all">
                         <a href="#">Wszystkie <img src="images/arrowWhite.png" alt=">"></a>
                     </li>
-                    <li>
-                        <a href="#">Lakiery <img src="images/arrowWhite.png" alt=">"></a>
+                    <li data-category="look">
+                        <a href="#">Piękny wygląd <img src="images/arrowWhite.png" alt=">"></a>
                     </li>
-                    <li>
-                        <a href="#">Szyby / Lampy <img src="images/arrowWhite.png" alt=">"></a>
-                    </li>
-                    <li>
-                        <a href="#">Wnętrza <img src="images/arrowWhite.png" alt=">"></a>
-                    </li>
-                    <li>
-                        <a href="#">Felgi <img src="images/arrowWhite.png" alt=">"></a>
+                    <li data-category="interior">
+                        <a href="#">Zadbane wnętrze <img src="images/arrowWhite.png" alt=">"></a>
                     </li>
                 </ul>
             </nav>
@@ -315,7 +309,7 @@
             <h2 class="section_header">Kontakt</h2>
             <div class="container">
                 <div class="logo_box">
-                    <img src="images/logoBlack.png" alt="Shine Up Detailing">
+                    <img src="images/logoBlack.svg" alt="Shine Up Detailing">
                 </div>
                 <ul class="contact_list">
                     <li class="contact_right"><a href="tel://+48223657888">22 365 78 88</a></li>
@@ -421,6 +415,7 @@
                 </form>
             </div>
         </div>
+
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
         <script src="js/mapApp.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

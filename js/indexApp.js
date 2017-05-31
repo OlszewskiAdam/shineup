@@ -451,15 +451,261 @@
             }
         },
     };
+
+    let Gallery = {
+        DOMElements: {
+            body: $("body"),
+            realizationContainer: 0,
+            realizationPhoto: 0,
+            realizationDescription: 0,
+            realizationsBox: 0,
+            header: 0,
+            serviceList: 0,
+            description: 0,
+            activeBox: 0,
+            loadButtonBox: 0,
+            loadButton:0,
+        },
+        State: {
+            sliderCounter: 0,
+            fullscreen: false,
+        },
+        setElements: () =>{
+            let realizationContainer = $(".realization_container");
+            if(realizationContainer.length > 0){
+                Gallery.DOMElements.realizationContainer = realizationContainer;
+                let realizationPhoto = realizationContainer.find(".realization_photo");
+                let realizationDescription = realizationContainer.find(".realization_description");
+                let header = realizationDescription.find("h3");
+                let serviceList = realizationDescription.find("ul");
+                let description = realizationDescription.find("p");
+                let realizationsBox = $(".realizations_box");
+                let activeBox = $(".active_realization");
+                let loadButtonBox = $(".button_box");
+                let loadButton = loadButtonBox.find(".button_white");
+                Gallery.DOMElements.realizationDescription = realizationDescription;
+                Gallery.DOMElements.realizationPhoto = realizationPhoto;
+                Gallery.DOMElements.header = header;
+                Gallery.DOMElements.serviceList = serviceList;
+                Gallery.DOMElements.description = description;
+                Gallery.DOMElements.realizationsBox = realizationsBox;
+                Gallery.DOMElements.activeBox = activeBox;
+                Gallery.DOMElements.loadButtonBox = loadButtonBox;
+                Gallery.DOMElements.loadButton = loadButton;
+                return true;
+            }
+            else{
+                return false;
+            }
+        },
+        setActiveBox: (box) =>{
+            let activeBox = Gallery.DOMElements.activeBox;
+            activeBox.removeClass("active_realization");
+            box.addClass("active_realization");
+            Gallery.DOMElements.activeBox = box;
+
+            let newPhoto = box.find(".realizations_photo").clone();
+            let newHeader = box.find("h3").text();
+            let newList = box.find("ul").clone();
+            let newDescription = box.find("p").text();
+
+            let realizationPhoto = Gallery.DOMElements.realizationPhoto;
+            let realizationContainer = Gallery.DOMElements.realizationContainer;
+            let realizationHeader = realizationContainer.find("h3");
+            let realizationList = realizationContainer.find("ul");
+            let realizationDescription = realizationContainer.find("p");
+
+            //Guzik od slidera next
+            let navButtonNext = $("<a href='#' class='slider_button_next'>");
+            let newDivNext = $("<div>");
+            let newButImgNext = $("<img src='images/blackArrow.png' alt='>'>")
+            newDivNext.append(newButImgNext);
+            navButtonNext.append(newDivNext);
+            newPhoto.append(navButtonNext);
+
+            //Guzik od slider prev
+            let navButtonPrev = $("<a href='#' class='slider_button_prev'>");
+            let newDivPrev = $("<div>");
+            let newButImgPrev = $("<img src='images/blackArrow.png' alt='<'>")
+            newDivPrev.append(newButImgPrev);
+            navButtonPrev.append(newDivPrev);
+            newPhoto.append(navButtonPrev);
+
+            //Guzik od wyjscia z fullscreen
+
+            let navButtonExit = $("<a href='#' class='slider_button_exit'>");
+            let newButTextExit = "Zamknij";
+            navButtonExit.text(newButTextExit);
+            newPhoto.append(navButtonExit);
+
+            realizationPhoto.remove();
+            Gallery.DOMElements.realizationPhoto = newPhoto;
+
+            newPhoto.removeClass("realizations_photo");
+            newPhoto.addClass("realization_photo");
+
+            realizationContainer.prepend(newPhoto);
+            realizationHeader.text(newHeader);
+            realizationList.remove();
+            realizationHeader.after(newList);
+
+            realizationDescription.text(newDescription);
+        },
+        setRealizationBox: () =>{
+            if(Gallery.setElements()){
+                let realizationsBox = Gallery.DOMElements.realizationsBox;
+                realizationsBox.on('click', (event) => {
+                    event.preventDefault();
+                    let eventTarget = $(event.target);
+                    let eventParent = eventTarget.parent();
+                    let box;
+                    if(eventTarget.hasClass("realizations_box")){
+                        box = eventTarget;
+                    }
+                    else if($(eventTarget).attr("alt")){
+                        box = eventTarget.parent().parent();
+                    }
+                    else if (eventParent.hasClass("realizations_box")){
+                        box = eventParent;
+                    }
+                    Gallery.setActiveBox(box);
+                    let realizationCategory = $(".realizations_category");
+                    let offsetRealization = realizationCategory.offset()
+                    let offsetTop = offsetRealization.top;
+                    $("html, body").animate({
+                        scrollTop: offsetTop,
+                    }, 500)
+                    Gallery.setGallerySlider();
+                })
+
+            }
+        },
+        setGallerySlider: () =>{
+            if(Gallery.setElements()){
+                Gallery.State.sliderCounter = 0;
+                let sliderBox = Gallery.DOMElements.realizationPhoto;
+                let slides = $(sliderBox).find(".gallery_photo");
+                let navButtonNext = $(sliderBox).find(".slider_button_next");
+                let navButtonPrev = $(sliderBox).find(".slider_button_prev");
+                let navButtonExit = $(sliderBox).find(".slider_button_exit");
+                navButtonNext.on('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    index = Gallery.State.sliderCounter;
+                    activeSlide = slides[index];
+                    newIndex = index + 1;
+                    Gallery.State.sliderCounter++;
+                    if(newIndex >= slides.length){
+                        newIndex = 0;
+                        Gallery.State.sliderCounter = 0;
+                    }
+                    let nextSlide = slides[newIndex];
+                    $(activeSlide).animate({
+                        opacity: 0,
+                    }, 500, function(){
+                        $(this).removeClass("gallery_photo_main");
+                    });
+                    $(nextSlide).css("display", "block");
+                    $(nextSlide).animate({
+                        opacity: 1,
+                    }, 500, function(){
+                        $(this).addClass("gallery_photo_main");
+                    })
+                });
+                navButtonPrev.on('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    index = Gallery.State.sliderCounter;
+                    activeSlide = slides[index];
+                    newIndex = index - 1;
+                    Gallery.State.sliderCounter--;
+                    if(newIndex <= -1){
+                        newIndex = slides.length -1;
+                        Gallery.State.sliderCounter = slides.length -1;
+                    }
+                    let prevSlide = slides[newIndex];
+                    $(activeSlide).animate({
+                        opacity: 0,
+                    }, 500, function(){
+                        $(this).removeClass("gallery_photo_main");
+                    });
+                    $(prevSlide).css("display", "block");
+                    $(prevSlide).animate({
+                        opacity: 1,
+                    }, 500, function(){
+                        $(this).addClass("gallery_photo_main");
+                    })
+                });
+                sliderBox.on('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    sliderBox.addClass("realization_photo_fullscreen");
+                    Gallery.State.fullscreen = true;
+                });
+                navButtonExit.on('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    sliderBox.removeClass("realization_photo_fullscreen");
+                    Gallery.State.fullscreen = false;
+                });
+            };
+        },
+        setLoadButton: () =>{
+            if(Gallery.setElements()){
+                let loadButton = Gallery.DOMElements.loadButton;
+                loadButton.on('click', (event) => {
+                    event.preventDefault();
+                    let realizationsBox = Gallery.DOMElements.realizationsBox;
+                    let unvisBoxs = [];
+                    let windowWidth = $(window).width();
+                    let loadCounter = 0;
+                    realizationsBox.each(function(){
+                        if($(this).css("display") == "none"){
+                            unvisBoxs.push(this);
+                        }
+                    });
+                    if(unvisBoxs.length > 0){
+                        if(windowWidth < 900){
+                            loadCounter = 1;
+                        }
+                        else if(windowWidth >= 900 && windowWidth < 1200){
+                            loadCounter = 2;
+                        }
+                        else if(windowWidth >= 1200){
+                            loadCounter = 3;
+                        }
+                        if(loadCounter > unvisBoxs.length){
+                            loadCounter = unvisBoxs.length;
+                        }
+                        for (var i = 0; i < loadCounter; i++) {
+                            let box = $(unvisBoxs[i]);
+                            box.slideDown(600);
+                        }
+                        if(loadCounter == unvisBoxs.length){
+                            loadButton.addClass("button_off");
+                        }
+                    }
+                    else if(unvisBoxs.length == 0){
+                        loadButton.addClass("button_off");
+                    }
+                })
+            }
+        },
+    }
     MobileMenu.setButton();
     ServiceMenu.setButtons();
     CategoryMenu.setButtons();
     OpinionMenu.setButtons();
     Popup.setButtons();
+    Gallery.setRealizationBox();
+    Gallery.setActiveBox(Gallery.DOMElements.activeBox);
+    Gallery.setGallerySlider();
+    Gallery.setLoadButton();
     $(window).on('resize', (event) => {
         MobileMenu.setResize();
         ServiceMenu.setResize();
         CategoryMenu.setResize();
         Popup.setResize();
     })
+
 //});
