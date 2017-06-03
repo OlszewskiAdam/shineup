@@ -69,7 +69,6 @@
             }
         },
     };
-
     let ServiceMenu = {
         DOMElements: {
             serviceList: 0,
@@ -137,8 +136,6 @@
             }
         },
     };
-
-
     let CategoryMenu = {
         DOMElements:{
             categoryList: 0,
@@ -260,8 +257,7 @@
             }
         },
     };
-
-    OpinionMenu = {
+    let OpinionMenu = {
         DOMElements: {
             opinionContainer: 0,
             opinionBoxs: 0,
@@ -409,17 +405,9 @@
                     popup.addClass("popup_box_horizontal");
                 }
                 popup.css("left", -(windowWidth * 10)).css("display", "block");
-                //console.log(windowWidth * 2);
                 popup.animate({
                     left: 0,
-                }, 600, () =>{
-                    if(windowWidth < 768){
-                    //    body.addClass("stop_scroll");
-                    }
-                    else{
-                    //    body.removeClass("stop_scroll");
-                    }
-                });
+                }, 600);
             });
             exitBut.on('click', (event) => {
                 event.preventDefault();
@@ -451,7 +439,6 @@
             }
         },
     };
-
     let Gallery = {
         DOMElements: {
             body: $("body"),
@@ -469,6 +456,109 @@
         State: {
             sliderCounter: 0,
             fullscreen: false,
+            allRealizations: null,
+            sliderArr: [],
+            sliderRealizationsActive: false,
+            visBoxCounter: 0,
+            indexSlider: false,
+        },
+        saveRealizations: (response) => {
+            Gallery.State.allRealizations = response;
+        },
+        loadAllRealizations: () => {
+            $.ajax({
+                url: "realizations/realizations.json",
+            }).done(function(response){
+                Gallery.saveRealizations(response.Realizations);
+                Gallery.setGallery();
+                Gallery.setElements();
+                Gallery.setActiveBox();
+                Gallery.setRealizationBox();
+                Gallery.setLoadButton();
+                Gallery.setRealizationSlider();
+            }).fail(function(error){
+                console.log(error);
+            })
+        },
+        setActiveBox: () =>{
+            let activeBox = $(Gallery.DOMElements.activeBox);
+            let activeName = activeBox.find("h3").text();
+            let realizationsArr = $(Gallery.State.allRealizations);
+            let realizationsHeader = $(Gallery.DOMElements.header);
+            let realizationPhoto = Gallery.DOMElements.realizationPhoto;
+            let serviceList = Gallery.DOMElements.serviceList;
+            realizationPhoto.html("");
+            realizationsArr.each(function(){
+                if(this.name == activeName){
+                    let newHeader = this.name;
+                    let images = $(this.images);
+                    let services = this.services;
+                    let serviceLook = $(services.look);
+                    let serviceInterior = $(services.interior);
+                    let newList = $("<ul>");
+                    let navButtonNext = $("<a href='#' class='slider_button_next'>");
+                    let newDivNext = $("<div>");
+                    let newButImgNext = $("<img src='images/blackArrow.png' alt='>'>");
+                    let navButtonPrev = $("<a href='#' class='slider_button_prev'>");
+                    let newDivPrev = $("<div>");
+                    let newButImgPrev = $("<img src='images/blackArrow.png' alt='<'>")
+                    let navButtonExit = $("<a href='#' class='slider_button_exit'>");
+                    let newButTextExit = "Zamknij";
+                    let realizationDescription = $(".realization_description");
+                    let oldServiceList = realizationDescription.find("ul");
+                    let listDescription = $("<li class='list_text'>Wykonane zabiegi</li>");
+                    images.each(function(index){
+                        let newImg = $("<img class='gallery_photo'>");
+                        newImg.attr("src", this);
+                        if(index == 0){
+                            newImg.addClass("gallery_photo_main");
+                        }
+                        realizationPhoto.append(newImg);
+                    });
+                    newList.append(listDescription);
+                    if(serviceLook.length > 0){
+                        let lookList = $("<li class='list_look'>");
+                        lookList.text("Piękny wygląd: ");
+                        let lookServices = $("<ol>");
+                        serviceLook.each(function(){
+                            let text = this;
+                            let newLi = $("<li>");
+                            newLi.append(text);
+                            lookServices.append(newLi);
+                        });
+                        lookList.append(lookServices);
+                        newList.append(lookList);
+                    };
+                    if(serviceInterior.length > 0){
+                        let interiorList = $("<li class='list_interior'>");
+                        interiorList.text("Zadbane wnętrze: ");
+                        let interiorServices = $("<ol>");
+                        serviceInterior.each(function(){
+                            let text = this;
+                            let newLi = $("<li>");
+                            newLi.append(text);
+                            interiorServices.append(newLi);
+                        });
+                        interiorList.append(interiorServices);
+                        newList.append(interiorList);
+                    }
+                    oldServiceList.remove();
+                    realizationDescription.append(newList);
+                    realizationsHeader.text(this.name);
+                    //Guzik od slidera next
+                    newDivNext.append(newButImgNext);
+                    navButtonNext.append(newDivNext);
+                    realizationPhoto.append(navButtonNext);
+                    //Guzik od slider prev
+                    newDivPrev.append(newButImgPrev);
+                    navButtonPrev.append(newDivPrev);
+                    realizationPhoto.append(navButtonPrev);
+                    //Guzik od wyjscia z fullscreen
+                    navButtonExit.text(newButTextExit);
+                    realizationPhoto.append(navButtonExit);
+                    Gallery.setGallerySlider();
+                }
+            });
         },
         setElements: () =>{
             let realizationContainer = $(".realization_container");
@@ -476,19 +566,17 @@
                 Gallery.DOMElements.realizationContainer = realizationContainer;
                 let realizationPhoto = realizationContainer.find(".realization_photo");
                 let realizationDescription = realizationContainer.find(".realization_description");
+                let realizationBoxs = $(".realizations_box");
                 let header = realizationDescription.find("h3");
                 let serviceList = realizationDescription.find("ul");
-                let description = realizationDescription.find("p");
-                let realizationsBox = $(".realizations_box");
                 let activeBox = $(".active_realization");
                 let loadButtonBox = $(".button_box");
                 let loadButton = loadButtonBox.find(".button_white");
+                Gallery.DOMElements.realizationsBox = realizationBoxs;
                 Gallery.DOMElements.realizationDescription = realizationDescription;
                 Gallery.DOMElements.realizationPhoto = realizationPhoto;
                 Gallery.DOMElements.header = header;
                 Gallery.DOMElements.serviceList = serviceList;
-                Gallery.DOMElements.description = description;
-                Gallery.DOMElements.realizationsBox = realizationsBox;
                 Gallery.DOMElements.activeBox = activeBox;
                 Gallery.DOMElements.loadButtonBox = loadButtonBox;
                 Gallery.DOMElements.loadButton = loadButton;
@@ -498,84 +586,43 @@
                 return false;
             }
         },
-        setActiveBox: (box) =>{
-            let activeBox = Gallery.DOMElements.activeBox;
-            activeBox.removeClass("active_realization");
-            box.addClass("active_realization");
-            Gallery.DOMElements.activeBox = box;
-
-            let newPhoto = box.find(".realizations_photo").clone();
-            let newHeader = box.find("h3").text();
-            let newList = box.find("ul").clone();
-            let newDescription = box.find("p").text();
-
-            let realizationPhoto = Gallery.DOMElements.realizationPhoto;
-            let realizationContainer = Gallery.DOMElements.realizationContainer;
-            let realizationHeader = realizationContainer.find("h3");
-            let realizationList = realizationContainer.find("ul");
-            let realizationDescription = realizationContainer.find("p");
-
-            //Guzik od slidera next
-            let navButtonNext = $("<a href='#' class='slider_button_next'>");
-            let newDivNext = $("<div>");
-            let newButImgNext = $("<img src='images/blackArrow.png' alt='>'>")
-            newDivNext.append(newButImgNext);
-            navButtonNext.append(newDivNext);
-            newPhoto.append(navButtonNext);
-
-            //Guzik od slider prev
-            let navButtonPrev = $("<a href='#' class='slider_button_prev'>");
-            let newDivPrev = $("<div>");
-            let newButImgPrev = $("<img src='images/blackArrow.png' alt='<'>")
-            newDivPrev.append(newButImgPrev);
-            navButtonPrev.append(newDivPrev);
-            newPhoto.append(navButtonPrev);
-
-            //Guzik od wyjscia z fullscreen
-
-            let navButtonExit = $("<a href='#' class='slider_button_exit'>");
-            let newButTextExit = "Zamknij";
-            navButtonExit.text(newButTextExit);
-            newPhoto.append(navButtonExit);
-
-            realizationPhoto.remove();
-            Gallery.DOMElements.realizationPhoto = newPhoto;
-
-            newPhoto.removeClass("realizations_photo");
-            newPhoto.addClass("realization_photo");
-
-            realizationContainer.prepend(newPhoto);
-            realizationHeader.text(newHeader);
-            realizationList.remove();
-            realizationHeader.after(newList);
-
-            realizationDescription.text(newDescription);
-        },
         setRealizationBox: () =>{
             if(Gallery.setElements()){
-                let realizationsBox = Gallery.DOMElements.realizationsBox;
+                let realizationsBox = $(Gallery.DOMElements.realizationsBox);
                 realizationsBox.on('click', (event) => {
                     event.preventDefault();
+                    console.log(Gallery.State.indexSlider);
+                    if(Gallery.State.indexSlider){
+                        let realizationContainer = $(".realization_container");
+                        realizationContainer.slideDown(300);
+                        console.log(realizationContainer);
+                        Gallery.State.indexSlider = false;
+                    }
                     let eventTarget = $(event.target);
                     let eventParent = eventTarget.parent();
                     let box;
+                    let active = $(Gallery.DOMElements.activeBox);
+                    active.removeClass("active_realization")
                     if(eventTarget.hasClass("realizations_box")){
+                        Gallery.DOMElements.activeBox = eventTarget;
                         box = eventTarget;
                     }
-                    else if($(eventTarget).attr("alt")){
+                    else if($(eventTarget).attr("src")){
+                        Gallery.DOMElements.activeBox = eventTarget.parent().parent();
                         box = eventTarget.parent().parent();
                     }
                     else if (eventParent.hasClass("realizations_box")){
+                        Gallery.DOMElements.activeBox = eventParent;
                         box = eventParent;
                     }
-                    Gallery.setActiveBox(box);
-                    let realizationCategory = $(".realizations_category");
+                    box.addClass("active_realization");
+                    Gallery.setActiveBox();
+                    let realizationCategory = $(".section_realizations");
                     let offsetRealization = realizationCategory.offset()
                     let offsetTop = offsetRealization.top;
                     $("html, body").animate({
                         scrollTop: offsetTop,
                     }, 500)
-                    Gallery.setGallerySlider();
                 })
 
             }
@@ -588,6 +635,11 @@
                 let navButtonNext = $(sliderBox).find(".slider_button_next");
                 let navButtonPrev = $(sliderBox).find(".slider_button_prev");
                 let navButtonExit = $(sliderBox).find(".slider_button_exit");
+                for (var i = 0; i < slides.length; i++) {
+                    if($(slides[i]).hasClass("gallery_photo_main")){
+                        Gallery.State.sliderCounter = i;
+                    }
+                }
                 navButtonNext.on('click', (event) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -656,30 +708,23 @@
                 loadButton.on('click', (event) => {
                     event.preventDefault();
                     let realizationsBox = Gallery.DOMElements.realizationsBox;
+                    let visBoxsLength = realizationsBox.length;
                     let unvisBoxs = [];
                     let windowWidth = $(window).width();
-                    let loadCounter = 0;
+                    let loadCounter = 3;
                     realizationsBox.each(function(){
                         if($(this).css("display") == "none"){
                             unvisBoxs.push(this);
                         }
                     });
                     if(unvisBoxs.length > 0){
-                        if(windowWidth < 900){
-                            loadCounter = 1;
-                        }
-                        else if(windowWidth >= 900 && windowWidth < 1200){
-                            loadCounter = 2;
-                        }
-                        else if(windowWidth >= 1200){
-                            loadCounter = 3;
-                        }
                         if(loadCounter > unvisBoxs.length){
                             loadCounter = unvisBoxs.length;
                         }
                         for (var i = 0; i < loadCounter; i++) {
                             let box = $(unvisBoxs[i]);
                             box.slideDown(600);
+                            box.removeClass("gallery_unvis");
                         }
                         if(loadCounter == unvisBoxs.length){
                             loadButton.addClass("button_off");
@@ -691,21 +736,272 @@
                 })
             }
         },
+        setGallery: () =>{
+            let realizationsBox = $(Gallery.State.allRealizations);
+            let sliderArr = Gallery.State.sliderArr;
+            let slideLength = realizationsBox.length;
+            let sliderBox = $(".realizations_slider");
+            let sectionRealizations = $(".section_realizations");
+            if(sliderBox.hasClass("slider_active")){
+                Gallery.State.sliderRealizationsActive = true;
+            }
+            if(sectionRealizations.hasClass("index_slider")){
+                Gallery.State.indexSlider = true;
+            }
+            let windowWidth = $(window).width();
+            let visBoxCounter = 3;
+            if(windowWidth < 768 && Gallery.State.sliderRealizationsActive){
+                visBoxCounter = 1;
+            }
+            Gallery.State.visBoxCounter = visBoxCounter;
+            for (var i=0; i< realizationsBox.length; i++) {
+                var j = Math.floor(Math.random() * realizationsBox.length);
+                var temp = realizationsBox[i];
+                realizationsBox[i] = realizationsBox[j];
+                realizationsBox[j] = temp;
+            }
+            realizationsBox.each(function(){
+                let realizationName = this.name;
+                let realizationImages = this.images;
+                let newArticle = $("<article class='realizations_box col-1 gallery_unvis'>");
+                let newPhotoDiv = $("<div class='realizations_photo'>");
+                let newMiniature = $("<img class='min_photo'>");
+                let newHeader = $("<h3>");
+                for (var i=0; i< realizationImages.length; i++) {
+                    var j = Math.floor(Math.random() * realizationImages.length);
+                    var temp = realizationImages[i];
+                    realizationImages[i] = realizationImages[j];
+                    realizationImages[j] = temp;
+                }
+                newMiniature.attr("src", realizationImages[0]);
+                newPhotoDiv.append(newMiniature);
+                newArticle.append(newPhotoDiv);
+                newHeader.text(realizationName);
+                newArticle.append(newHeader);
+                sliderBox.append(newArticle);
+            });
+            let boxs = $(".realizations_box");
+            for (var i = 0; i < visBoxCounter; i++) {
+                let box = $(boxs[i]);
+                if(i == 0){
+                    box.addClass("active_realization");
+                    box.addClass("slide_active");
+                    box.removeClass("gallery_unvis");
+                }
+                box.removeClass("gallery_unvis");
+            }
+        },
+        setSliderSize: () =>{
+            if(Gallery.State.sliderRealizationsActive){
+                Gallery.setSlides();
+                let windowWidth = $(window).width();
+                let box = $(".realizations_box");
+                let boxHeight = box.css("height");
+                let visBoxCounter = Gallery.State.visBoxCounter;
+                let newBoxCounter;
+                if(windowWidth < 768){
+                    newBoxCounter = 1;
+                }
+                else if(windowWidth >= 768){
+                    newBoxCounter = 3;
+                }
+                if(newBoxCounter != visBoxCounter){
+                    let slides = $(".realizations_box");
+                    let activeSlides = [];
+                    let activeSlide;
+                    if(newBoxCounter == 3){
+                        slides.each(function(){
+                            if(!($(this).hasClass("gallery_unvis"))){
+                                activeSlide = $(this);
+                            }
+                        })
+                        let secondSlide = activeSlide.next()
+                        let thirdSlide = activeSlide.next().next()
+                        if(secondSlide.hasClass("slider_realization_next")){
+                            secondSlide = $(slides[0]);
+                        }
+                        if(thirdSlide.hasClass("slider_realization_next")){
+                            thirdSlide = $(slides[0]);
+                        }
+                        if(thirdSlide.length == 0){
+                            thirdSlide = $(slides[1]);
+                        }
+                        secondSlide.removeClass("gallery_unvis");
+                        thirdSlide.removeClass("gallery_unvis");
+                        Gallery.State.visBoxCounter = 3;
+                        Gallery.setSlides();
+                    }
+                    else if(newBoxCounter == 1){
+                        slides.each(function(){
+                            if(!($(this).hasClass("gallery_unvis"))){
+                                activeSlides.push($(this));
+                            }
+                        })
+                        for (var i = 0; i < activeSlides.length; i++) {
+                            if(i == 0){
+                                $(activeSlides[i]).removeClass("realizations_slide");
+                            }
+                            else{
+
+                                $(activeSlides[i]).addClass("gallery_unvis");
+                            }
+                        }
+                        Gallery.State.visBoxCounter = 1;
+                        Gallery.setSlides();
+                    }
+                }
+            }
+
+        },
+        setRealizationSlider: () =>{
+            let sliderActive = Gallery.State.sliderRealizationsActive;
+            if(sliderActive){
+                let slider = $(".realizations_slider");
+                let navButtonNext = $("<a href='#' class='slider_realization_next'>");
+                let newDivNext = $("<div>");
+                let newButImgNext = $("<img src='images/blackArrow.png' alt='>'>");
+                let navButtonPrev = $("<a href='#' class='slider_button_prev'>");
+                newDivNext.append(newButImgNext);
+                navButtonNext.append(newDivNext);
+                slider.append(navButtonNext);
+                navButtonNext.on('click', (event) => {
+                    event.preventDefault();
+                    Gallery.setSliderSize();
+                    Gallery.setSlides();
+                    let windowWidth = $(window).width();
+                    let visBoxCounter = Gallery.State.visBoxCounter;
+                    let slides = $(".realizations_box");
+                    let activeSlides = [];
+                    slides.each(function(){
+                        if(!($(this).hasClass("gallery_unvis"))){
+                            activeSlides.push($(this));
+                        }
+                    });
+                    if(visBoxCounter == 1){;
+                        let activeSlide = $(activeSlides[0]);
+                        let slider = $(".slider_active");
+                        let slideWidth = activeSlide.css("width");
+                        let slideHeight = activeSlide.css("height");
+                        let nextSlide = $(activeSlides[0]).next()
+                        if(!(nextSlide.hasClass("realizations_box"))){
+                            nextSlide = $(slides[0]);
+                        };
+                        slider.css("height", slideHeight).css("width", slideWidth);
+                        nextSlide.addClass("realizations_slide");
+                        nextSlide.removeClass("gallery_unvis");
+                        nextSlide.css("left", windowWidth).css("width", windowWidth).css("z-index", "2");
+                        activeSlide.addClass("realizations_slide");
+                        activeSlide.css("z-index", "1").css("width", windowWidth);
+                        activeSlide.animate({
+                            left: -windowWidth,
+                        }, 300, ()=>{
+                            activeSlide.css("width", "");
+                            activeSlide.addClass("gallery_unvis");
+                            activeSlide.removeClass("realizations_slide");
+                            activeSlide.removeClass("slide_active");
+                        });
+                        nextSlide.animate({
+                            left: 0,
+                        },300, ()=>{
+                            nextSlide.removeClass("realizations_slide");
+                            nextSlide.addClass("slide_active");
+                            nextSlide.css("width", "");
+                            slider.css("height", "").css("width", "");
+                        });
+                    }
+                    else if(visBoxCounter == 3) {
+                        let slider = $(".slider_active");
+                        let activeSlide = $(".slide_active");
+                        let slideWidth = activeSlide.css("width");
+                        let slideHeight = activeSlide.css("height");
+                        let secondSlide = activeSlide.next()
+                        let thirdSlide = activeSlide.next().next();
+                        if(secondSlide.hasClass("slider_realization_next")){
+                            secondSlide = $(slides[0]);
+                        }
+                        if(thirdSlide.hasClass("slider_realization_next")){
+                            thirdSlide = $(slides[0]);
+                        }
+                        if(thirdSlide.length == 0){
+                            thirdSlide = $(slides[1]);
+                        }
+                        let nextSlide = thirdSlide.next();
+                        if(nextSlide.hasClass("slider_realization_next")){
+                            nextSlide = $(slides[0]);
+                        }
+                        slider.css("width", slideWidth * 3);
+
+                        activeSlide.addClass("realizations_slide");
+                        activeSlide.css("width", slideWidth);
+                        activeSlide.removeClass("slide_active");
+
+                        secondSlide.removeClass("realizations_slide");
+                        secondSlide.css("margin-left", slideWidth);
+                        secondSlide.addClass("slide_active");
+
+                        nextSlide.addClass("realizations_slide");
+                        nextSlide.removeClass("gallery_unvis");
+                        nextSlide.css("left", windowWidth).css("width", "").css("z-index", "2");
+
+
+                        activeSlide.animate({
+                            left: -(parseFloat(slideWidth)),
+                        }, 300, ()=>{
+                            activeSlide.css("width", "");
+                            activeSlide.addClass("gallery_unvis");
+                            activeSlide.removeClass("realizations_slide");
+                            activeSlide.removeClass("slide_active");
+                        });
+                        secondSlide.animate({
+                            left: 0,
+                            marginLeft: 0,
+                        }, 300, ()=>{
+                            secondSlide.removeClass("realizations_slide");
+                            secondSlide.addClass("slide_active");
+                            secondSlide.css("width", "");
+                        });
+                        thirdSlide.animate({
+                            left: parseFloat(slideWidth),
+                        }, 300);
+                        nextSlide.animate({
+                            left: parseFloat(slideWidth) * 2,
+                        },300);
+                    }
+                })
+            }
+        },
+        setSlides: () =>{
+            let activeSlide = $(".slide_active");
+            let slides = $(".realizations_box");
+            let secondSlide = activeSlide.next();
+            let thirdSlide = activeSlide.next().next();
+            if(secondSlide.hasClass("slider_realization_next")){
+                secondSlide = $(slides[0]);
+            }
+            if(thirdSlide.hasClass("slider_realization_next")){
+                thirdSlide = $(slides[0]);
+            }
+            if(thirdSlide.length == 0){
+                thirdSlide = $(slides[1]);
+            }
+            let slideWidth = parseFloat(activeSlide.css("width"));
+            secondSlide.addClass("realizations_slide").css("left", slideWidth);
+            thirdSlide.addClass("realizations_slide").css("left", slideWidth * 2);
+        },
     }
     MobileMenu.setButton();
     ServiceMenu.setButtons();
     CategoryMenu.setButtons();
     OpinionMenu.setButtons();
     Popup.setButtons();
-    Gallery.setRealizationBox();
-    Gallery.setActiveBox(Gallery.DOMElements.activeBox);
-    Gallery.setGallerySlider();
-    Gallery.setLoadButton();
+    Gallery.loadAllRealizations();
+
     $(window).on('resize', (event) => {
         MobileMenu.setResize();
         ServiceMenu.setResize();
         CategoryMenu.setResize();
         Popup.setResize();
+        Gallery.setSliderSize();
     })
 
 //});
