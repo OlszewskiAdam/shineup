@@ -143,16 +143,19 @@
         },
         State:{
             menuActive: false,
+            activeCategory: null,
         },
         setElements: () => {
             let checkCategoryList = $(".category_list").length;
             if (checkCategoryList > 0){
                 let categoryList = $(".category_list");
-                let buttons = categoryList.find("li")
+                let categoryActive = $(".category_list").find(".category_active").children()[0];
+                let dataCategory = $(categoryActive).data("category");
+                let buttons = categoryList.find("li");
+                CategoryMenu.State.activeCategory = dataCategory;
                 CategoryMenu.DOMElements.categoryList = categoryList;
                 CategoryMenu.DOMElements.buttons = buttons;
                 return true;
-
             }
             else{
                 return false;
@@ -211,49 +214,166 @@
                             oldCategory.removeClass("category_active");
                         }
                     }
+                    let slides = $(Gallery.State.allRealizations);
+                    let eventTarget = $(event.target);
+                    if(!(eventTarget.attr("href"))){
+                        eventTarget = eventTarget.parent();
+                    }
+                    let category = eventTarget.data("category");
+                    let slider = $(".realizations_slider");
+                    let loadButton = $(".button_box").find(".button_black");
+                    Gallery.State.filteredArr = [];
+                    if(category != CategoryMenu.State.activeCategory){
+                        slider.html("");
+                        if(category != "all"){
+                            slides.each(function(){
+                                let self = $(this)[0];
+                                let categoryList = $(self.services).prop(category);
+                                if (categoryList.length > 0) {
+                                    Gallery.State.filteredArr.push($(this)[0]);
+                                }
+                            })
+                            Gallery.setGallery(Gallery.State.filteredArr);
+                        }
+                        else{
+                            Gallery.setGallery(Gallery.State.allRealizations);
+                        }
+                        loadButton.removeClass("button_off");
+                        Gallery.setElements();
+                        Gallery.setActiveBox();
+                        Gallery.setRealizationBox();
+                        Gallery.setRealizationSlider();
+                    }
+                    let serviceContainer = $(".service_container");
+                    if(serviceContainer.length > 0 && category != CategoryMenu.State.activeCategory){
+                        let sectionServices = $(".section_services");
+                        let newCategory = category;
+                        let oldServices = $(".service_container_active");
+                        let newServices;
+                        let sectionTop = $(".section_top");
+                        let serviceTop = sectionTop.find(".service_top");
+                        let oldServiceTop = sectionTop.find(".service_top" + ".service_active");
+                        let newServiceTop;
+                        if(newCategory == "all"){
+                            newCategory = "concierge"
+                        }
+                        serviceContainer.each(function(){
+                            if($(this).data("category") == newCategory){
+                                newServices = this;
+                            }
+                        });
+                        serviceTop.each(function(){
+                            if($(this).data("category") == newCategory){
+                                newServiceTop = this;
+                            }
+                        })
+                        oldServices.slideUp(400);
+                        sectionServices.slideUp(400, function(){
+                            oldServices.removeClass("service_container_active");
+                            oldServices.css("display", "");
+                            $(newServices).addClass("service_container_active");
+                        });
+                        sectionServices.slideDown(600);
+                        $(newServiceTop).css("position", "absolute").css("top", 0).css("opacity", 0);
+                        oldServiceTop.animate({
+                            opacity: 0,
+                        }, 300);
+                        $(newServiceTop).animate({
+                            opacity: 1,
+                        },300,function(){
+                            oldServiceTop.removeClass("service_active");
+                            oldServiceTop.css("opacity", "");
+                            $(newServiceTop).css("position", "").css("top", "").css("opacity", "");
+                            $(newServiceTop).addClass("service_active");
+                        });
+
+                    }
+                    CategoryMenu.State.activeCategory = category;
                 });
             }
         },
+        setServiceSelect: () =>{
+            let serviceContainer = $(".service_container");
+            if(serviceContainer.length > 0){
+                let list = serviceContainer.find("ul");
+                let services = list.find("li");
+                services.on('click', (event) => {
+                    event.preventDefault();
+                    let eventTarget = $(event.target);
+                    let serviceList = eventTarget.parent();
+                    let data = eventTarget.data("service");
+                    let descriptionBox =eventTarget.parent().parent().next();
+                    let descriptions = descriptionBox.children();
+                    let oldDescription = descriptionBox.find(".service_active");
+                    let oldList =  serviceList.find(".list_active");
+                    let oldData = oldList.data("service");
+                    let newDescription;
+                    descriptions.each(function(){
+                        if($(this).data("service") == data){
+                            newDescription = $(this);
+                        }
+                    })
+                    if(data != oldData){
+                        oldList.removeClass("list_active");
+                        eventTarget.addClass("list_active");
+                        newDescription.css("position", "absolute").css("top",0).css("opacity", 0);
+                        oldDescription.animate({
+                            opacity: 0,
+                        }, 300);
+                        newDescription.animate({
+                            opacity: 1,
+                        }, 300, function(){
+                            newDescription.css("position", "").css("top", "").css("opacity", "");
+                            newDescription.addClass("service_active");
+                            oldDescription.css("opacity", "");
+                            oldDescription.removeClass("service_active");
+                        });
+                    }
+                })
+            };
+        },
         setResize: () => {
-            let windowWidth = $(window).width();
-            let buttons = CategoryMenu.DOMElements.buttons;
-            if(windowWidth > 679){
-                buttons.each(function(){
-                    if($(this).hasClass("category")){
-                        $(this).css("display", "none");
-                    }
-                    else if($(this).hasClass("category_active")){
-                        $(this).removeClass();
-                        $(this).addClass("category_active");
-                    }
-                    else{
-                        $(this).css("display", "block");
-                    }
-                });
-            }
-            else{
-                buttons.each(function(){
-                    if($(this).hasClass("category")){
-                        $(this).css("display", "block");
-
-                    }
-                    else if($(this).hasClass("category_active")){
-                        $(this).removeClass();
-                        $(this).addClass("category_active");
-                        if(CategoryMenu.State.menuActive == true){
-                            $(this).addClass("category_name_active");
-                        }
-                    }
-                    else{
-                        if(CategoryMenu.State.menuActive == true){
-                            $(this).addClass("category_menu_active");
-                        }
-                        else{
-                            $(this).removeClass("category_menu_active");
+            if(CategoryMenu.State.menuActive){
+                let windowWidth = $(window).width();
+                let buttons = CategoryMenu.DOMElements.buttons;
+                if(windowWidth > 679){
+                    buttons.each(function(){
+                        if($(this).hasClass("category")){
                             $(this).css("display", "none");
                         }
-                    }
-                });
+                        else if($(this).hasClass("category_active")){
+                            $(this).removeClass();
+                            $(this).addClass("category_active");
+                        }
+                        else{
+                            $(this).css("display", "block");
+                        }
+                    });
+                }
+                else{
+                    buttons.each(function(){
+                        if($(this).hasClass("category")){
+                            $(this).css("display", "block");
+
+                        }
+                        else if($(this).hasClass("category_active")){
+                            $(this).removeClass();
+                            $(this).addClass("category_active");
+                            if(CategoryMenu.State.menuActive == true){
+                                $(this).addClass("category_name_active");
+                            }
+                        }
+                        else{
+                            if(CategoryMenu.State.menuActive == true){
+                                $(this).addClass("category_menu_active");
+                            }
+                            else{
+                                $(this).removeClass("category_menu_active");
+                                $(this).css("display", "none");
+                            }
+                        }
+                    });
+                }
             }
         },
     };
@@ -458,6 +578,7 @@
             fullscreen: false,
             allRealizations: null,
             sliderArr: [],
+            filteredArr: [],
             sliderRealizationsActive: false,
             visBoxCounter: 0,
             indexSlider: false,
@@ -470,7 +591,7 @@
                 url: "realizations/realizations.json",
             }).done(function(response){
                 Gallery.saveRealizations(response.Realizations);
-                Gallery.setGallery();
+                Gallery.setGallery(Gallery.State.allRealizations);
                 Gallery.setElements();
                 Gallery.setActiveBox();
                 Gallery.setRealizationBox();
@@ -485,7 +606,7 @@
             let activeName = activeBox.find("h3").text();
             let realizationsArr = $(Gallery.State.allRealizations);
             let realizationsHeader = $(Gallery.DOMElements.header);
-            let realizationPhoto = Gallery.DOMElements.realizationPhoto;
+            let realizationPhoto = $(Gallery.DOMElements.realizationPhoto);
             let serviceList = Gallery.DOMElements.serviceList;
             realizationPhoto.html("");
             realizationsArr.each(function(){
@@ -591,11 +712,9 @@
                 let realizationsBox = $(Gallery.DOMElements.realizationsBox);
                 realizationsBox.on('click', (event) => {
                     event.preventDefault();
-                    console.log(Gallery.State.indexSlider);
                     if(Gallery.State.indexSlider){
                         let realizationContainer = $(".realization_container");
                         realizationContainer.slideDown(300);
-                        console.log(realizationContainer);
                         Gallery.State.indexSlider = false;
                     }
                     let eventTarget = $(event.target);
@@ -617,12 +736,12 @@
                     }
                     box.addClass("active_realization");
                     Gallery.setActiveBox();
-                    let realizationCategory = $(".section_realizations");
+                    let realizationCategory = $(".realization_container");
                     let offsetRealization = realizationCategory.offset()
                     let offsetTop = offsetRealization.top;
                     $("html, body").animate({
                         scrollTop: offsetTop,
-                    }, 500)
+                    }, 1000)
                 })
 
             }
@@ -736,10 +855,9 @@
                 })
             }
         },
-        setGallery: () =>{
-            let realizationsBox = $(Gallery.State.allRealizations);
+        setGallery: (arr) =>{
             let sliderArr = Gallery.State.sliderArr;
-            let slideLength = realizationsBox.length;
+            let slideLength = arr.length;
             let sliderBox = $(".realizations_slider");
             let sectionRealizations = $(".section_realizations");
             if(sliderBox.hasClass("slider_active")){
@@ -754,13 +872,13 @@
                 visBoxCounter = 1;
             }
             Gallery.State.visBoxCounter = visBoxCounter;
-            for (var i=0; i< realizationsBox.length; i++) {
-                var j = Math.floor(Math.random() * realizationsBox.length);
-                var temp = realizationsBox[i];
-                realizationsBox[i] = realizationsBox[j];
-                realizationsBox[j] = temp;
+            for (var i=0; i< arr.length; i++) {
+                var j = Math.floor(Math.random() * arr.length);
+                var temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
-            realizationsBox.each(function(){
+            $(arr).each(function(){
                 let realizationName = this.name;
                 let realizationImages = this.images;
                 let newArticle = $("<article class='realizations_box col-1 gallery_unvis'>");
@@ -992,6 +1110,7 @@
     MobileMenu.setButton();
     ServiceMenu.setButtons();
     CategoryMenu.setButtons();
+    CategoryMenu.setServiceSelect();
     OpinionMenu.setButtons();
     Popup.setButtons();
     Gallery.loadAllRealizations();

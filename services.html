@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
     <meta charset="utf-8">
     <title>Shine Up - Car Detailing</title>
@@ -49,112 +49,117 @@
     </header>
     <section class="section_top clearfix">
         <div class="container">
-            <div class="look service_top service_active">
+            <div class="service_top service_active" data-category="look">
                 <h1>Piękny wygląd</h1>
                 <p>
                     Pozwól nam zadbać o piękno swojego samochodu.<br>
                     Z pasją i precyzją nadamy Twojemu autu nowy blask, a odpowiednie kosmetyki, utrwalą jego charakter na dłużej. Bazując na wiedzy i doświadczeniu, nasi eksperci dobiorą dla Twojego auta rekomendowane kosmetyki, o odpowiednich właściwościach dla zastosowanego w aucie materiału.
                 </p>
-                <a href="#" class="popup_button">
-                    <div class="button_white">
-                        Kontakt
-                    </div>
-                </a>
+
             </div>
-            <div class="interior service_top">
+            <div class="service_top" data-category="interior">
                 <h1>Zadbane wnętrze</h1>
                 <p>
                     Zadbane wnętrze auta jest czymś bliskim naszemu sercu. Jest to coś, co nie jest widoczne z zewnątrz, ale mające ogromne znaczenie dla właścicieli pojazdów. Jest to ekskluzywna przestrzeń wpływająca bezpośrednio na komfort i samopoczucie użytkownika auta.
                     Dbamy, aby w trakcie każdej podróży, nasi klienci czuli się, jakby to była pierwsza podróż ich autem.
                 </p>
-                <a href="#" class="popup_button">
-                    <div class="button_white">
-                        Kontakt
-                    </div>
-                </a>
             </div>
-            <div class="concierge service_top">
+            <div class="service_top" data-category="concierge">
                 <h1>Concierge</h1>
                 <p>
                     Dla najbardziej wymagających klientów, dla których czas jest bezcenny, posiadamy usługę concierge.
                 </p>
-                <a href="#" class="popup_button">
-                    <div class="button_white">
-                        Kontakt
-                    </div>
-                </a>
             </div>
+            <a href="#" class="popup_button">
+                <div class="button_white">
+                    Kontakt
+                </div>
+            </a>
         </div>
     </section>
     <nav class="realizations_category clearfix">
         <ul class="container category_list">
             <li class="category">Kategoria: </li>
-            <li class="category_active"  data-category="look">
-                <a href="#">Piękny wygląd <img src="images/arrowWhite.png" alt=">"></a>
+            <li class="category_active">
+                <a href="#" data-category="look">Piękny wygląd <img src="images/arrowWhite.png" alt=">"></a>
             </li>
-            <li data-category="interior">
-                <a href="#">Zadbane wnętrze <img src="images/arrowWhite.png" alt=">"></a>
+            <li>
+                <a href="#" data-category="interior">Zadbane wnętrze <img src="images/arrowWhite.png" alt=">"></a>
             </li>
-            <li data-category="all">
-                <a href="#">Concierge <img src="images/arrowWhite.png" alt=">"></a>
+            <li>
+                <a href="#" data-category="all">Concierge <img src="images/arrowWhite.png" alt=">"></a>
             </li>
         </ul>
     </nav>
     <section class="section_services clearfix">
-        <div class="container clearfix">
+        <h2 class="section_header">Usługi</h2>
+        <div class="container service_container service_container_active clearfix services_menu" data-category="look">
             <div class="services_lists">
-                <ul class="look service_list service_active">
-                    <li class="list_active">Powłoki lakiernicze</li>
-                    <li>Felgi</li>
-                    <li>Szyby</li>
-                    <li>Silnik</li>
-                    <li>Lampy</li>
-                </ul>
-                <ul class="interior service_list">
-                    <li>Tapicerka</li>
-                    <li>Plastiki, gumy oraz winyl</li>
-                </ul>
-                <ul class="concierge service_list">
-                    <li>Concierge</li>
+                <ul class="service_list service_active">
+                    <li class="list_active" data-service="paint">Powłoki lakiernicze</li>
+                    <li data-service="wheels">Felgi</li>
+                    <li data-service="glass">Szyby</li>
+                    <li data-service="engine">Silnik</li>
+                    <li data-service="lights">Lampy</li>
                 </ul>
             </div>
             <div class="services_descriptions">
-                <div class="look service_descriptions service_active">
-                    <p class="paint service_description service_active">
+
+                    <p class="service_description service_active" data-service="paint">
                         Obecnie stosuje się dwa rodzaje zabezpieczeń i pielęgnacji powłok lakierniczych. Pierwszą, jest zastosowanie ceramicznej powłoki, która doskonale zabezpiecza lakier na długi czas, oraz konserwuje piękno oryginalnej powłoki lakierniczej. Drugą, mniej trwałą i dającą tylko chwilowy efekt, jest powłoka woskowa.<br>
                         <br>
                         Powłoka ceramiczna jest najlepszą metodą zabezpieczenia i utrwalenia piękna naszego auta. Dzięki tej metodzie auto nabiera pięknego połysku, a lakier zyskuje trwałą ochronę. Powłoka ceramiczna jest najbardziej zaawansowaną i długotrwałą formą ochrony. Każda powłoka ceramiczna, zostaje dodatkowo pokryta powłoką hydrofobową, która ułatwia bieżącą pielęgnację auta. Każda usługa kończy się nadaniem odpowiedniego certyfikatu oraz gwarancji jakości. Okres gwarancji jest uzależniony od rodzaju zastosowanej powłoki.<br>
                         <br>
                         W Shine up, korzystamy z najwyższej jakości wosków naturalnych, które posiadają właściwości ochronne oraz nadają głęboki połysk. Tego typu forma pielęgnacji i ochrony utrzymuje się nawet do trzech miesięcy, w zależności od jakości wosku.
                     </p>
-                    <p class="wheels service_description">
+                    <p class="service_description" data-service="wheels">
                         Czyste oraz zadbane felgi znacznie poprawiają ogólny wygląd całego pojazdu. Należy pamiętać, że agresywne mycie np. twardą szczotką lub nieodpowiednim preparatem, może mieć destrukcyjny wpływ na powłokę lakierniczą felg. Wierzchnia powłoka może być również niszczona przez osad hamulcowy czy chemię drogową. Aby ochronić felgi przed korozją oraz uniknąć szlifowania i ponownego lakierowania, firma Shine Up proponuje oczyszczanie kół bezpiecznymi preparatami oraz zabezpieczenie felg np. powłoką ceramiczną lub woskiem.”
                     </p>
-                    <p class="glass service_description">
+                    <p class="service_description" data-service="glass">
                         Konserwacja szyb i lusterek to nie tylko element estetyczny, ale przede wszystkim zabieg wyraźnie poprawiający widoczność, a tym samym bezpieczeństwo na drodze. Dzięki użyciu specjalnych preparatów oraz aplikacji powłoki hydrofobicznej, jazda w złych warunkach atmosferycznych nie stanowić już będzie uciążliwego problemem. W efekcie zabiegu cząsteczki wody będą „odpychane” przez niewidzialną warstwę powłoki.
                     </p>
-                    <p class="engine service_description">
+                    <p class="service_description" data-service="engine">
                         W firmie Shine Up dbamy również o serce pojazdu, którym jest niewątpliwie silnik. Aby umożliwić naszym klientom dumne prezentowanie tego, co ich ukochane auta skrywają pod maską, oferujemy dokładne i ostrożne oczyszczanie komory silnika wraz z odżywianiem bezpiecznymi środkami elementów gumowych i plastikowych.
                     </p>
-                    <p class="lights service_description">
+                    <p class="service_description" data-service="lights">
                         Często spotykany problem matowych oraz porysowanych lamp jest spowodowane nieumiejętnym myciem, uszkodzeniami twardymi drobinkami lub po prostu działaniem czasu. Taki stan lamp, zmniejsza atrakcyjność wizualną pojazdu, ale przede wszystkim, zmniejsza bezpieczeństwo w trakcie podróży. Naszym celem jest również zwiększanie bezpieczeństwa podróży, dla tego ofercie posiadamy odświeżenie, przywracanie pierwotnego połysku i zabezpieczenie również tych części pojazdu.
                     </p>
-                </div>
-                <div class="interior service_descriptions">
-                    <p class="upholstery">
-                        W odpowiedni sposób odnowimy oraz zabezpieczymy tapicerki wykonane zarówno z tkaniny, weluru, alcantary jak i skóry. Posiadamy odpowiednie kosmetyki oraz preparaty do każdego rodzaju obić, tak aby zapobiegać częstemu zjawisku wysuszenia materiału i szybkiemu starzenie się danego elementu. Marka Shine Up wykorzystuje naturalne i bezpieczne środki, które nie tylko czyszczą, ale również pielęgnują i chronią, jak np. powłoki antybakteryjne. Po etapie oczyszczania, wszystkie elementy wnętrza zostają dodatkowo odżywione i zabezpieczone.
-                    </p>
-                    <p class="vinyl">
-                        Dokładne oczyszczenie i konserwacja elementów plastikowych, gumowych i winylowych odpowiednio je zabezpieczy oraz nada głębszy kolor. Elementy z tworzyw sztucznych w firmie Shine Up ożywiane są za pomocą preparatów najwyższej jakości.
-                    </p>
-                </div>
-                <div class="concierge service_descriptions">
-                    <p class="concierge">
+
+            </div>
+        </div>
+
+        <div class="container service_container clearfix services_menu" data-category="interior">
+            <div class="services_lists">
+                <ul class="service_list service_active">
+                    <li class="list_active" data-service="vinyl">Plastiki, gumy oraz winyl</li>
+                    <li data-service="upholstery">Tapicerka</li>
+                </ul>
+            </div>
+            <div class="services_descriptions service_active">
+                <p class="service_description service_active" data-service="vinyl">
+                    Dokładne oczyszczenie i konserwacja elementów plastikowych, gumowych i winylowych odpowiednio je zabezpieczy oraz nada głębszy kolor. Elementy z tworzyw sztucznych w firmie Shine Up ożywiane są za pomocą preparatów najwyższej jakości.
+                </p>
+                <p class="service_description"  data-service="upholstery">
+                    W odpowiedni sposób odnowimy oraz zabezpieczymy tapicerki wykonane zarówno z tkaniny, weluru, alcantary jak i skóry. Posiadamy odpowiednie kosmetyki oraz preparaty do każdego rodzaju obić, tak aby zapobiegać częstemu zjawisku wysuszenia materiału i szybkiemu starzenie się danego elementu. Marka Shine Up wykorzystuje naturalne i bezpieczne środki, które nie tylko czyszczą, ale również pielęgnują i chronią, jak np. powłoki antybakteryjne. Po etapie oczyszczania, wszystkie elementy wnętrza zostają dodatkowo odżywione i zabezpieczone.
+                </p>
+            </div>
+        </div>
+
+        <div class="container service_container clearfix services_menu" data-category="concierge">
+            <div class="services_lists">
+                <ul class="service_list service_active">
+                    <li class="list_active" data-service="concierge">Concierge</li>
+                </ul>
+            </div>
+            <div class="services_descriptions service_active">
+                <div class="service_descriptions service_active">
+                    <p class="service_active" data-service="concierge">
                         Concierge, jest to usługa premium, która pozwoli klientowi cieszyć się pięknem, komfortem oraz bezpieczeństwem swoich aut, bez potrzeby pamiętania o jakichkolwiek formalnościach. Dedykowany pracownik Shine Up zrobi za Ciebie przegląd, badanie techniczne, odnowi ubezpieczenie, czy znajdzie dla Ciebie nowe wymarzone auto, pomagając jednocześnie przy sprzedaży obecnego pojazdu. Odciążamy naszych klientów, tak aby mieli czas na rzeczy naprawdę ważne.
                     </p>
                 </div>
             </div>
         </div>
+
         <div class="car_image">
             <img src="images/car.png" alt="car">
         </div>
@@ -165,7 +170,7 @@
                 <img src="images/carDesktop.png" alt="Car">
             </div>
             <div class="realization_description">
-                <h3></h3>
+                <h3>Przykładowa realizacja</h3>
                 <ul>
                     <li class="list_text"></li>
                     <li></li>
@@ -349,7 +354,7 @@
                     Skontaktuj się - po jego naciśnięciu pojawi się telefon do biura i będzie można na niego kliknąć i zadzwonić.
                 </p>
             </div>
-            <div class="popup_option">
+            <div class="popup_option inactive_service">
                 <div class="popup_icon">
                     <img src="images/contact_icon.png" alt="Poproś o kontakt">
                 </div>
@@ -399,9 +404,12 @@
             </form>
         </div>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="js/indexApp.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCphj2uFTiko_0R_rItxU5XoL4xAfs4NU0&callback=initMap">
+    </script>
     <script src="js/mapApp.js"></script>
     </body>
 </html>
