@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
 function initMap() {
     var shineup = {lat: 52.224104, lng: 21.230428};
     var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 17,
+    zoom: 16,
     center: shineup,
     styles:[
         {

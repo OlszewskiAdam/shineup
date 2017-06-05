@@ -1,4 +1,4 @@
-//$(function(){
+$(function(){
 
     let MobileMenu = {
         DOMElements: {
@@ -1157,4 +1157,4 @@
         Gallery.setSliderSize();
     })
 
-//});
+});
